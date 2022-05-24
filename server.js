@@ -35,6 +35,23 @@ app.get('/store/seed', (req, res) => {
 	});
 });
 
+// Create
+app.post('/store', (req, res) => {
+	if (req.body.qty === '0') {
+		//if 0 product wont be available for purchase
+		req.body.qty = 'Not Available';
+    }
+
+	Product.create(req.body, (error, createdProduct) => {
+		res.redirect('/store');
+	});
+});
+
+// New
+app.get('/store/new', (req, res) => {
+	res.render('new.ejs');
+});
+
 //Index
 app.get('/store', (req, res) => {
 	Product.find({}, (error, allProducts) => {
