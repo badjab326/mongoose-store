@@ -3,6 +3,7 @@ const express = require('express');
 const app = express();
 require('dotenv').config();
 const { default: mongoose } = require("mongoose");
+const Product = require('./models/products.js');
 
 // Database Connection
 mongoose.connect(process.env.DATABASE_URL, {
@@ -22,6 +23,26 @@ db.on('disconnected', () => console.log('mongo disconnected'));
 app.use(express.urlencoded({ extended: true }));
 
 // Routes
+
+// Seed
+const productSeed = require('./models/productSeed.js');
+
+app.get('/store/seed', (req, res) => {
+	Product.deleteMany({}, (error, allProducts) => {});
+
+	Product.create(productSeed, (error, data) => {
+		res.redirect('/store');
+	});
+});
+
+//Index
+app.get('/store', (req, res) => {
+	Product.find({}, (error, allProducts) => {
+		res.render('index.ejs', {
+			products: allProducts,
+		});
+	});
+});
 
 // Listener
 const PORT = process.env.PORT;
