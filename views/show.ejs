@@ -16,7 +16,20 @@
 		<%= product.description %>
         <br />
         <p>$<%= product.price %></p>
-        <p><%= product.qty %> left!</p>
+
+        <% if (product.qty <= 0) { %>
+            <p>OUT OF STOCK!</p>
+        <% }else if (product.qty > 0) { %>
+            <p><%= product.qty %> left!</p>
+            <form action="/store/<%= index %>?_method=PUT" method="POST">
+                <input type="button" value="BUY" />
+              </form>
+        <% } %>
+
+
         <a href="/store/<%= index %>/edit">Edit This Product</a>
+        <form action="/store/<%= index %>?_method=DELETE" method="POST">
+            <input type="submit" value="DELETE" />
+          </form>
 	</body>
 </html>

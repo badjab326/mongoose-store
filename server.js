@@ -33,20 +33,20 @@ app.get('/store/seed', (req, res) => {
 	Product.deleteMany({}, (error, allProducts) => {});
 
 	Product.create(productSeed, (error, data) => {
-		res.redirect('/store');
-	});
+		res.redirect('/store')
+	})
 });
 
 // Create
 app.post('/store', (req, res) => {
 	Product.create(req.body, (error, createdProduct) => {
-		res.redirect('/store');
-	});
+		res.redirect('/store')
+	})
 });
 
 // New
 app.get('/store/new', (req, res) => {
-	res.render('new.ejs');
+	res.render('new.ejs')
 });
 
 //Index
@@ -54,23 +54,23 @@ app.get('/store', (req, res) => {
 	Product.find({}, (error, allProducts) => {
 		res.render('index.ejs', {
 			products: allProducts,
-		});
-	});
+		})
+	})
 });
 
 // Show
 app.get('/store/:id', (req, res) => {
     if (req.body.qty === '0') {
 		//if 0 product wont be available for purchase
-		req.body.qty = 'Not Available';
+		req.body.qty === 'OUT OF STOCK';
     }
 
 	Product.findById(req.params.id, (err, foundProduct) => {
 		res.render('show.ejs', {
 			product: foundProduct,
             index: req.params.id
-		});
-	});
+		})
+	})
 });
 
 // Edit
@@ -85,7 +85,6 @@ app.get('/store/:id/edit', (req, res) => {
 
 // Update
 app.put('/store/:id', async (req, res) => {
-    console.log('hello')
     const updatedProduct = {
         name: req.body.name,
         description: req.body.description,
@@ -97,6 +96,13 @@ app.put('/store/:id', async (req, res) => {
     await Product.findOneAndUpdate({index: req.params.id}, updatedProduct)
     res.redirect(`/store/${req.params.id}`)
 });
+
+// Delete
+app.delete("/store/:id", (req, res) => {
+    Product.findByIdAndRemove(req.params.id, (err, data) => {
+      res.redirect("/store")
+    })
+  });
 
 // Listener
 const PORT = process.env.PORT;
