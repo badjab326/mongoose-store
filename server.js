@@ -1,5 +1,6 @@
 // Dependencies
 const express = require('express');
+const methodOverride = require("method-override");
 const app = express();
 require('dotenv').config();
 const { default: mongoose } = require("mongoose");
@@ -21,6 +22,7 @@ db.on('disconnected', () => console.log('mongo disconnected'));
 // Middleware
 // Body parser middleware: give us access to req.body
 app.use(express.urlencoded({ extended: true }));
+app.use(methodOverride("_method"));
 
 // Routes
 
@@ -37,11 +39,6 @@ app.get('/store/seed', (req, res) => {
 
 // Create
 app.post('/store', (req, res) => {
-	if (req.body.qty === '0') {
-		//if 0 product wont be available for purchase
-		req.body.qty = 'Not Available';
-    }
-
 	Product.create(req.body, (error, createdProduct) => {
 		res.redirect('/store');
 	});
@@ -59,6 +56,46 @@ app.get('/store', (req, res) => {
 			products: allProducts,
 		});
 	});
+});
+
+// Show
+app.get('/store/:id', (req, res) => {
+    if (req.body.qty === '0') {
+		//if 0 product wont be available for purchase
+		req.body.qty = 'Not Available';
+    }
+
+	Product.findById(req.params.id, (err, foundProduct) => {
+		res.render('show.ejs', {
+			product: foundProduct,
+            index: req.params.id
+		});
+	});
+});
+
+// Edit
+app.get('/store/:id/edit', (req, res) => {
+    Product.findById(req.params.id, (err, foundProduct) => {
+		res.render('edit.ejs', {
+			product: foundProduct,
+            index: req.params.id
+		})
+	})
+});
+
+// Update
+app.put('/store/:id', async (req, res) => {
+    console.log('hello')
+    const updatedProduct = {
+        name: req.body.name,
+        description: req.body.description,
+        img: req.body.img,
+        price: req.body.price,
+        qty: req.body.qty,
+        index: req.params.id
+    }
+    await Product.findOneAndUpdate({index: req.params.id}, updatedProduct)
+    res.redirect(`/store/${req.params.id}`)
 });
 
 // Listener
