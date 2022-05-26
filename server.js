@@ -5,6 +5,7 @@ const app = express();
 require('dotenv').config();
 const { default: mongoose } = require("mongoose");
 const Product = require('./models/products.js');
+const storeController = require('./controllers/store.js')
 
 // Database Connection
 mongoose.connect(process.env.DATABASE_URL, {
@@ -25,99 +26,7 @@ app.use(express.static('style'));
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
 
-// Routes
-
-// Seed
-const productSeed = require('./models/productSeed.js');
-
-app.get('/store/seed', (req, res) => {
-	Product.deleteMany({}, (error, allProducts) => {});
-
-	Product.create(productSeed, (error, data) => {
-		res.redirect('/store')
-	})
-});
-
-// Create
-app.post('/store', (req, res) => {
-	Product.create(req.body, (error, createdProduct) => {
-		res.redirect('/store')
-	})
-});
-
-// New
-app.get('/store/new', (req, res) => {
-	res.render('new.ejs')
-});
-
-//Index
-app.get('/store', (req, res) => {
-	Product.find({}, (error, allProducts) => {
-		res.render('index.ejs', {
-			products: allProducts,
-		})
-	})
-});
-
-// Show
-app.get('/store/:id', (req, res) => {
-    if (req.body.qty === '0') {
-		//if 0 product wont be available for purchase
-		req.body.qty === 'OUT OF STOCK';
-    }
-
-	Product.findById(req.params.id, (err, foundProduct) => {
-		res.render('show.ejs', {
-			product: foundProduct,
-            index: req.params.id
-		})
-	})
-});
-
-// Edit
-app.get('/store/:id/edit', (req, res) => {
-    Product.findById(req.params.id, (err, foundProduct) => {
-		res.render('edit.ejs', {
-			product: foundProduct,
-            index: req.params.id
-		})
-	})
-});
-
-// Update
-app.put('/store/:id', async (req, res) => {
-    const updatedProduct = {
-        name: req.body.name,
-        description: req.body.description,
-        img: req.body.img,
-        price: req.body.price,
-        qty: req.body.qty,
-        index: req.params.id
-    }
-    await Product.findOneAndUpdate({index: req.params.id}, updatedProduct)
-    res.redirect(`/store/${req.params.id}`)
-});
-
-// Buy
-app.put("/store/:id/buy", (req, res) => {
-    Product.findByIdAndUpdate(
-      req.params.id,
-      {$inc: {qty: -1}},
-      {
-        new: true,
-      },
-      (error, updatedProduct) => {
-        res.redirect(`/store/${req.params.id}`)
-      }
-    )
-  });
-
-// Delete
-app.delete("/store/:id", (req, res) => {
-    Product.findByIdAndRemove(req.params.id, (err, data) => {
-      res.redirect("/store")
-    })
-  });
+app.use('/store', storeController)
 
 // Listener
 const PORT = process.env.PORT;
