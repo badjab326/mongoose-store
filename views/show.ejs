@@ -1,16 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-		<meta charset="UTF-8" />
+        <meta charset="UTF-8" />
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="/style.css">
 		<title><%=product.name %></title>
 	</head>
-	<body>
+	<body id="show">
 		<nav>
 			<a href="/store">Home</a>
 		</nav>
-		<h1><%=product.name %></h1>
+		<header><h1><%=product.name %></h1></header>
 		<img src="<%= product.img %>" title="<%= product.name %>">
 		<br />
 		<%= product.description %>
@@ -21,13 +22,14 @@
             <p>OUT OF STOCK!</p>
         <% }else if (product.qty > 0) { %>
             <p><%= product.qty %> left!</p>
-            <form action="/store/<%= index %>?_method=PUT" method="POST">
-                <input type="button" value="BUY" />
+            <form action="/store/<%= index %>/buy?_method=PUT" method="POST">
+                <input type="submit" value="BUY" />
               </form>
         <% } %>
 
 
-        <a href="/store/<%= index %>/edit">Edit This Product</a>
+        <a href="/store/<%= index %>/edit">Edit This Product</a> 
+        <br />
         <form action="/store/<%= index %>?_method=DELETE" method="POST">
             <input type="submit" value="DELETE" />
           </form>

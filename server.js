@@ -21,6 +21,7 @@ db.on('disconnected', () => console.log('mongo disconnected'));
 
 // Middleware
 // Body parser middleware: give us access to req.body
+app.use(express.static('style'));
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
 
@@ -96,6 +97,20 @@ app.put('/store/:id', async (req, res) => {
     await Product.findOneAndUpdate({index: req.params.id}, updatedProduct)
     res.redirect(`/store/${req.params.id}`)
 });
+
+// Buy
+app.put("/store/:id/buy", (req, res) => {
+    Product.findByIdAndUpdate(
+      req.params.id,
+      {$inc: {qty: -1}},
+      {
+        new: true,
+      },
+      (error, updatedProduct) => {
+        res.redirect(`/store/${req.params.id}`)
+      }
+    )
+  });
 
 // Delete
 app.delete("/store/:id", (req, res) => {

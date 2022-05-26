@@ -1,0 +1,61 @@
+body {
+    background-color: rgb(0, 0, 62);
+    color: white;
+    margin: 0;
+    padding: 0;
+
+}
+header, footer {
+    width: 80%;
+    margin: 0 auto;
+    padding: 1em 3em;
+    box-sizing: border-box;
+    background: #f9f9f9;
+    border-radius: 1em;
+    text-align: center;
+    box-shadow: 1px 1px 5px #888;
+    display: flex;
+    justify-content: center;
+    color: rgb(0, 0, 62);
+    align-items: center;
+    justify-items: center;
+  }
+  h1 {
+      display: flex;
+      text-align: center;
+      align-items: center;
+      justify-content: center;
+      justify-items: center;
+  }
+  ul {
+      list-style-type: none;
+      padding: 10;
+      margin: 10 10 10 10;
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: space-evenly;
+      justify-items: center;
+      text-align: center;
+  }
+  input {
+    width: 20%;
+    margin: 10px 0;
+    padding: 10px;
+    box-sizing: border-box;
+    border: 1px solid var(--light-green);
+    border-radius: 5px;
+  }
+  input:focus {
+    /* the outline property selects the default blue border that shows up on inputs. giving it a value of 0 gets rid of it */
+    outline: 0;
+    border: 1px solid var(--purple);
+  }
+  form {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      justify-items: center;
+      align-content: center;
+      align-items: center;
+  }

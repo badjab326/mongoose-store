@@ -1,20 +1,23 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<meta charset="utf-8" />
+        <meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="/style.css">
 		<title>Mongoose Store</title>
 	</head>
 	<body>
         <nav>
             <a href="/store/new">Add a New Product</a>
         </nav>
-		<h1>Mongoose Store</h1>
+		<header><h1>Mongoose Store</h1></header>
 		<ul>
 			<% products.forEach(product => { %>
 			<li>
-                <%= product.name %> <br/>
                 <a href="/store/<%=product._id; %>"> <img src="<%= product.img %>" title="<%= product.name %>"> </a>
                 <br/>
+                <%= product.name %>
             </li>
 			<% }) %>
 		</ul>

@@ -4,17 +4,18 @@
 		<meta charset="UTF-8" />
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="/style.css">
 		<title>Edit Product</title>
 	</head>
 	<body>
-		<h1>Edit Product Page</h1>
+		<header><h1>Edit Product Page</h1></header>
 		<form action="/store/<%= index %>?_method=PUT" method="POST">
 			<input type="text" name="name" placeholder="name" value="<%= product.name %>" />
-            <input type="text" name="description" placeholder="description" value="<%= product.name %>"/><br />
+            <input type="text" name="description" placeholder="description" value="<%= product.description %>"/><br />
             <input type="text" name="img" placeholder="link to image" value="<%= product.img %>"/>
             <input type="number" name="price" placeholder="price" value="<%= product.price %>"/><br />
             <input type="number" name="qty" placeholder="quantity" value="<%= product.qty %>"/>
-			<input type="submit" value="Edit Product" />
+			<input type="submit" value="Submit Changes" />
 		</form>
 	</body>
 </html>
